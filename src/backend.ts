@@ -198,7 +198,7 @@ export class NotebookHandler {
     // **** various **************************************************************
 
     updateCellClasses(notebook: Notebook, scene_name: string) {
-        console.log('updating', scene_name)
+        // console.log('updating', scene_name)
         const tag = this._getSceneTag(scene_name);
         notebook.widgets.map((cell: Cell) => {
             if(!!cell.model.metadata.get(tag)) {
