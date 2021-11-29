@@ -1,3 +1,57 @@
+/* *****************************************************************
+ * Toolbar
+ * *****************************************************************/
+
+ .scenes-Toolbar {
+    flex: 0 0 auto;
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    padding: 4px;
+    margin: 4px;
+}
+
+.scenes-ToolbarButton {
+    height: 24px;
+    width: 24px;
+    background-color: inherit;
+
+    display: inline-block;
+    align-items: center;
+    vertical-align: middle;
+    border: none;
+    margin: 0px;
+    outline: none;
+    padding: 2px;
+}
+
+.scenes-ToolbarButton:hover {
+    background-color: var(--jp-layout-color2);
+    cursor: pointer;
+}
+
+/* *****************************************************************
+ * To be cleaned-up
+ * *****************************************************************/
+
+ .scenes-IconButton {
+    height: 16px;
+    width: 16px;
+    background-color: inherit;
+
+    display: inline-block;
+    align-items: center;
+    vertical-align: middle;
+    border: none;
+    margin: 0px;
+    outline: none;
+    padding: 2px;
+}
+
+.scenes-IconButton:hover {
+    background-color: var(--jp-layout-color2);
+    cursor: pointer;
+}
 
 .scenes-ScenesSidebar {
   flex: 1 1 auto;
@@ -107,27 +161,3 @@
 }
 */
 
-.scenes-IconButton {
-    height: 16px;
-    width: 16px;
-    background-color: inherit;
-
-    display: inline-block;
-    align-items: center;
-    vertical-align: middle;
-    border: none;
-    margin: 0px;
-    outline: none;
-    padding: 2px;
-}
-
-/* *****************************************************************
- * Toolbar
- * *****************************************************************/
-
-.scenes-Toolbar {
-    flex: 0 0 auto;
-    display: flex;
-    align-items: center;
-    flex-direction: row;
-}

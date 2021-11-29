@@ -1,16 +1,20 @@
 import { CommandRegistry } from '@lumino/commands';
 import * as React from 'react';
 import { NotebookHandler } from './backend';
-import { runIcon, closeIcon, editIcon, addIcon, caretUpIcon, caretDownIcon, copyIcon } from '@jupyterlab/ui-components';
+import { runIcon, closeIcon, editIcon, addIcon, copyIcon } from '@jupyterlab/ui-components';
 import { LabIcon } from '@jupyterlab/ui-components'
 
 
 import { ScenesSidebar } from './widget';
 import cellUp from '../style/svg/cellUp.svg';
 import cellDown from '../style/svg/cellDown.svg';
+import arrowUp from '../style/svg/arrowUp.svg';
+import arrowDown from '../style/svg/arrowDown.svg';
 
 const cellUpIcon = new LabIcon({name: 'cellUp', svgstr: cellUp});
 const cellDownIcon = new LabIcon({name: 'cellDown', svgstr: cellDown});
+const arrowUpIcon = new LabIcon({name: 'arrowUp', svgstr: arrowUp});
+const arrowDownIcon = new LabIcon({name: 'arrowDown', svgstr: arrowDown});
 
 export interface IPropertiesScenesDisplay {
   nbTitle: string;
@@ -28,7 +32,7 @@ export class ScenesDisplay extends React.Component<IPropertiesScenesDisplay, ISt
     render(): JSX.Element {
         return (
             <div className="scenes-ScenesSidebar">
-                <div className="scenes-Header">{this.props.nbTitle}</div>
+                <div className="scenes-Header">Scenes: {this.props.nbTitle}</div>
                 <hr/>
                 <Toolbar commands={this.props.commands}/>
                 <hr/>
@@ -150,13 +154,13 @@ class Toolbar extends React.Component<IPropertiesToolbar, IState> {
        
         return (
             <div className="scenes-Toolbar">
-                <button className="scenes-IconButton" title="New Empty Scene" onClick={onClickNew}><addIcon.react tag="span" className="jp-ToolbarButtonComponent-icon f1vya9e0"/></button>
-                <button className="scenes-IconButton" title="Duplicate Active Scene" onClick={onClickDuplicate}><copyIcon.react tag="span" className="jp-ToolbarButtonComponent-icon f1vya9e0"/></button>
-                <button className="scenes-IconButton" title="Move Active Scene Up" onClick={onClickUp}><caretUpIcon.react tag="span" className="jp-ToolbarButtonComponent-icon f1vya9e0"/></button>
-                <button className="scenes-IconButton" title="Move Active Scene Down" onClick={onClickDown}><caretDownIcon.react tag="span" className="jp-ToolbarButtonComponent-icon f1vya9e0"/></button>
+                <button className="scenes-ToolbarButton" title="New Empty Scene" onClick={onClickNew}><addIcon.react tag="span" className="jp-ToolbarButtonComponent-icon f1vya9e0"/></button>
+                <button className="scenes-ToolbarButton" title="Duplicate Active Scene" onClick={onClickDuplicate}><copyIcon.react tag="span" className="jp-ToolbarButtonComponent-icon f1vya9e0"/></button>
+                <button className="scenes-ToolbarButton" title="Move Active Scene Up" onClick={onClickUp}><arrowUpIcon.react tag="span" className="jp-ToolbarButtonComponent-icon f1vya9e0"/></button>
+                <button className="scenes-ToolbarButton" title="Move Active Scene Down" onClick={onClickDown}><arrowDownIcon.react tag="span" className="jp-ToolbarButtonComponent-icon f1vya9e0"/></button>
                 <div className="scenes-SceneItemSpacer"></div>
-                <button className="scenes-IconButton align-right" title="Jump to Next Scene Cell" onClick={onClickNext}><cellDownIcon.react tag="span" className="jp-ToolbarButtonComponent-icon f1vya9e0"/></button>
-                <button className="scenes-IconButton align-right" title="Move to Previous Scene Cell" onClick={onClickPrev}><cellUpIcon.react tag="span" className="jp-ToolbarButtonComponent-icon f1vya9e0"/></button>
+                <button className="scenes-ToolbarButton" title="Jump to Next Scene Cell" onClick={onClickNext}><cellDownIcon.react tag="span" className="jp-ToolbarButtonComponent-icon f1vya9e0"/></button>
+                <button className="scenes-ToolbarButton" title="Move to Previous Scene Cell" onClick={onClickPrev}><cellUpIcon.react tag="span" className="jp-ToolbarButtonComponent-icon f1vya9e0"/></button>
             </div>
         );
     }
