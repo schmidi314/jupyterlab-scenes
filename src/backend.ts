@@ -196,7 +196,7 @@ export class NotebookHandler {
     }
     
     // **** various **************************************************************
-    
+
     updateCellClasses(notebook: Notebook, scene_name: string) {
         console.log('updating', scene_name)
         const tag = this._getSceneTag(scene_name);
@@ -262,13 +262,16 @@ export class NotebookHandler {
 
     private _scenesChanged() {
         
-        // this._nbTracker.forEach
+        const activeScene = this._sceneDB.getActiveScene();
+        if(!activeScene) return;
 
-        let nbPanel = this._nbTracker.currentWidget;
-        let activeScene = this._sceneDB.getActiveScene();
-        if(nbPanel && activeScene) {
-            this.updateCellClasses(nbPanel.content, activeScene);
-        }
+        let activeNotebookPanel = this._nbTracker.currentWidget!;
+        
+        this._nbTracker.forEach((nbPanel) => {
+            if(nbPanel.context === activeNotebookPanel.context) {
+                this.updateCellClasses(nbPanel.content, activeScene);
+            }
+        });
 
         this.scenesChanged.emit(void 0);
     }
