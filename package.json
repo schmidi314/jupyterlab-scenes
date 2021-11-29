@@ -1,6 +1,6 @@
 {
   "name": "@schmidi314/jupyterlab-scenes",
-  "version": "1.0",
+  "version": "1.0.0",
   "description": "Define subsets of code cells as scenes and execute them.",
   "keywords": [
     "jupyter",
