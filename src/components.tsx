@@ -2,8 +2,15 @@ import { CommandRegistry } from '@lumino/commands';
 import * as React from 'react';
 import { NotebookHandler } from './backend';
 import { runIcon, closeIcon, editIcon, addIcon, caretUpIcon, caretDownIcon, copyIcon } from '@jupyterlab/ui-components';
+import { LabIcon } from '@jupyterlab/ui-components'
+
 
 import { ScenesSidebar } from './widget';
+import cellUp from '../style/svg/cellUp.svg';
+import cellDown from '../style/svg/cellDown.svg';
+
+const cellUpIcon = new LabIcon({name: 'cellUp', svgstr: cellUp});
+const cellDownIcon = new LabIcon({name: 'cellDown', svgstr: cellDown});
 
 export interface IPropertiesScenesDisplay {
   nbTitle: string;
@@ -148,8 +155,8 @@ class Toolbar extends React.Component<IPropertiesToolbar, IState> {
                 <button className="scenes-IconButton" title="Move Active Scene Up" onClick={onClickUp}><caretUpIcon.react tag="span" className="jp-ToolbarButtonComponent-icon f1vya9e0"/></button>
                 <button className="scenes-IconButton" title="Move Active Scene Down" onClick={onClickDown}><caretDownIcon.react tag="span" className="jp-ToolbarButtonComponent-icon f1vya9e0"/></button>
                 <div className="scenes-SceneItemSpacer"></div>
-                <button className="scenes-IconButton align-right" title="Jump to Next Scene Cell" onClick={onClickNext}><caretDownIcon.react tag="span" className="jp-ToolbarButtonComponent-icon f1vya9e0"/></button>
-                <button className="scenes-IconButton align-right" title="Move to Previous Scene Cell" onClick={onClickPrev}><caretUpIcon.react tag="span" className="jp-ToolbarButtonComponent-icon f1vya9e0"/></button>
+                <button className="scenes-IconButton align-right" title="Jump to Next Scene Cell" onClick={onClickNext}><cellDownIcon.react tag="span" className="jp-ToolbarButtonComponent-icon f1vya9e0"/></button>
+                <button className="scenes-IconButton align-right" title="Move to Previous Scene Cell" onClick={onClickPrev}><cellUpIcon.react tag="span" className="jp-ToolbarButtonComponent-icon f1vya9e0"/></button>
             </div>
         );
     }

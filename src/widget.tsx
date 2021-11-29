@@ -3,13 +3,15 @@ import { INotebookTracker } from '@jupyterlab/notebook';
 import { IMainMenu } from '@jupyterlab/mainmenu';
 import { Menu } from '@lumino/widgets';
 import { ReactWidget, InputDialog, Dialog, showErrorMessage } from '@jupyterlab/apputils';
+import { LabIcon } from '@jupyterlab/ui-components'
 
 import React from 'react';
 
 import { ScenesDisplay } from './components';
 import { NotebookHandler } from './backend';
+import scenesLogo from '../style/svg/scenesLogo.svg';
 
-
+const scenesIcon = new LabIcon({name: 'scenes', svgstr: scenesLogo});
 
 export class ScenesSidebar extends ReactWidget {
     constructor(app: JupyterFrontEnd, nbTracker: INotebookTracker, mainMenu: IMainMenu) {
@@ -76,7 +78,8 @@ export class ScenesSidebar extends ReactWidget {
     private _setupWidget() {
         this.id = 'scenes';
         this.title.caption = 'Scenes';
-        this.title.label = 'Scenes';
+        this.title.icon = scenesIcon;
+        // this.title.label = 'Scenes';
     }
 
     private _setupGlobalCommands() {

@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+    <g transform="matrix(0,1,-1,0,23.9,-0.1)" class="jp-icon3" fill="#616161">
+         <path transform="matrix(1,0,0,1.2,0,-2.9)" d="M 0.6 6 v 14 l 11 -7 z"/>
+    </g>
+ <ellipse transform="matrix(0,1,-1,0,23.9,-0.1)" rx="6.5" ry="6.4"
+     fill="#771e90"
+     cx="17.6"
+     cy="12.7"
+     />
+</svg>
