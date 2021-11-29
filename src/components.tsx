@@ -32,10 +32,8 @@ export class ScenesDisplay extends React.Component<IPropertiesScenesDisplay, ISt
     render(): JSX.Element {
         return (
             <div className="scenes-ScenesSidebar">
-                <div className="scenes-Header">Scenes: {this.props.nbTitle}</div>
-                <hr/>
+                <div className="scenes-Header">{this.props.nbTitle}: Scenes</div>
                 <Toolbar commands={this.props.commands}/>
-                <hr/>
                 <ScenesList 
                     scenes={this.props.scenes} 
                     currentScene={this.props.currentScene} 
@@ -100,9 +98,9 @@ class ScenesList extends React.Component<IPropertiesScenesList, IState> {
                         
             return (
                 <div className={className} onClick={onClickActivate} key={scene_name}>
-                    <button className="scenes-IconButton" title="Delete Scene" onClick={onClickDelete}><closeIcon.react tag="span" className="jp-ToolbarButtonComponent-icon f1vya9e0"/></button>
-                    <button className="scenes-IconButton" title="Run Scene" onClick={onClickRun}><runIcon.react tag="span" className="jp-ToolbarButtonComponent-icon f1vya9e0"/></button>
-                    <button className="scenes-IconButton" title="Rename Scene" onClick={onClickEdit}><editIcon.react tag="span" className="jp-ToolbarButtonComponent-icon f1vya9e0"/></button>
+                    <button className="scenes-ItemButton" title="Delete Scene" onClick={onClickDelete}><closeIcon.react tag="span" className="jp-ToolbarButtonComponent-icon f1vya9e0"/></button>
+                    <button className="scenes-ItemButton" title="Run Scene" onClick={onClickRun}><runIcon.react tag="span" className="jp-ToolbarButtonComponent-icon f1vya9e0"/></button>
+                    <button className="scenes-ItemButton" title="Rename Scene" onClick={onClickEdit}><editIcon.react tag="span" className="jp-ToolbarButtonComponent-icon f1vya9e0"/></button>
                     <div className="scenes-ItemText">{sceneNameDisplay}</div>
                     <div className="scenes-SceneItemSpacer"></div>
                     <button onClick={onClickInit} className={classNameInitButton}>init</button>

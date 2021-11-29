@@ -1,3 +1,41 @@
+:root {
+    --scenes-color: rgb(129, 68, 129);
+}
+
+.scene-cell .CodeMirror:after {
+    height: 10px;
+    width: 10px;
+    display: block;
+    content: '';
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    border-radius: 50%;
+    background-color: var(--scenes-color);
+}
+
+.scenes-ScenesSidebar {
+    flex: 1 1 auto;
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
+    background: var(--jp-layout-color1);
+    color: var(--jp-ui-font-color1);
+    font-size: var(--jp-ui-font-size1);
+    height: 100%;
+  }
+
+.scenes-ScenesSidebar .scenes-Header {
+    flex: 0 0 auto;
+    margin: 0px;
+    padding: 8px 12px;
+    text-transform: uppercase;
+    font-size: var(--jp-ui-font-size0);
+    font-weight: 600;
+    letter-spacing: 1px;
+    border-bottom: var(--jp-border-width) solid var(--jp-border-color2);
+}
+
 /* *****************************************************************
  * Toolbar
  * *****************************************************************/
@@ -8,7 +46,8 @@
     align-items: center;
     flex-direction: row;
     padding: 4px;
-    margin: 4px;
+    margin: 0px;
+    border-bottom: var(--jp-border-width) solid var(--jp-border-color2);
 }
 
 .scenes-ToolbarButton {
@@ -30,94 +69,87 @@
     cursor: pointer;
 }
 
+
 /* *****************************************************************
- * To be cleaned-up
+ * Scene List
  * *****************************************************************/
 
- .scenes-IconButton {
+.scenes-ScenesSidebar .scenes-SceneItem {
+    padding: 7px;
+    margin: 5px;
+    height: 28px;
+    background: var(--jp-layout-color2);
+    border-style: solid;
+    border-color: var(--jp-layout-color2);
+
+    flex: 0 0 auto;
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+}
+
+.scenes-ScenesSidebar .scenes-SceneItem:hover {
+    border-style: outset;
+    cursor: pointer;
+}
+
+.scenes-active {
+    background: var(--jp-layout-color3);
+    font-weight: bold;
+}
+
+/* **** Buttons ***************** */
+
+.scenes-ItemButton {
     height: 16px;
     width: 16px;
     background-color: inherit;
+    border-style: solid;
+    border-color: var(--jp-layout-color2);
 
     display: inline-block;
     align-items: center;
     vertical-align: middle;
-    border: none;
     margin: 0px;
     outline: none;
     padding: 2px;
 }
 
-.scenes-IconButton:hover {
-    background-color: var(--jp-layout-color2);
+.scenes-ItemButton:hover  {
+    border-style: outset;
     cursor: pointer;
 }
 
-.scenes-ScenesSidebar {
-  flex: 1 1 auto;
-  margin: 0;
-  padding: 0;
-  list-style-type: none;
-  background: var(--jp-layout-color1);
-  color: var(--jp-ui-font-color1);
-  font-size: var(--jp-ui-font-size1);
-  height: 100%;
-}
-
-.scenes-ScenesSidebar .scenes-Header {
-    padding: 10px;
-    text-transform: uppercase;
-}
-
-
-
-.scenes-ScenesSidebar .scenes-SceneItem:hover {
-    background: var(--jp-layout-color4);
+.scenes-ItemButton:hover:active {
+    border-style: inset;
     cursor: pointer;
 }
 
-
-
-.scenes-ScenesSidebar .scenes-SceneItemActive:hover {
-    background: var(--jp-layout-color4);
-    font-weight: bold;
-    cursor: pointer;
-}
-
-
-.scene-cell .CodeMirror:after {
-    height: 10px;
-    width: 10px;
-    display: block;
-    content: '';
-    position: absolute;
-    right: 10px;
-    top: 10px;
-    border-radius: 50%;
-    background-color: rgb(129, 68, 129);
-}
+/* **** Init button ************* */
 
 .scenes-InitSceneButton {
     border-radius: 8px;
-    color: var(--jp-ui-font-color3);
-    border-style: solid;
-    border-color: var(--jp-ui-font-color3);
-    float: right;
-    background-color: inherit;
-    border-width: 2px;
+    margin: 0px;
+    outline: none;
+    display: inline-block;
 
+    color: var(--jp-ui-font-color3);
+    border-color: var(--jp-ui-font-color3);
+    border-style: solid;
+    background-color: inherit;
 }
 
 .scenes-InitSceneButton:hover {
-    color: var(--jp-ui-font-color2);
-    border-color: var(--jp-ui-font-color2);
-    border-width: 4px;
+    color: var(--jp-ui-font-color1);
+    border-color: var(--jp-ui-font-color1);
+    border-style: outset;
+    cursor: pointer;
 }
 
 .scenes-InitSceneButtonActive {
     border-radius: 8px;
-    color: rgb(129, 68, 129);
-    border-color: rgb(129, 68, 129);
+    color: var(--scenes-color);
+    border-color: var(--scenes-color);
     float: right;
     border-style: solid;
     background-color: inherit;
@@ -125,39 +157,15 @@
 }
 
 .scenes-InitSceneButtonActive:hover {
-    border-width: 4px;
+    border-style: outset;
+    cursor: pointer;
 }
 
-/* Scene Item */
-
-.scenes-ScenesSidebar .scenes-SceneItem {
-    padding: 7px;
-    margin: 5px;
-    height: 28px;
-    background: var(--jp-layout-color2);
-
-    flex: 0 0 auto;
-    display: flex;
-    align-items: center;
-    flex-direction: row;
-}
-.scenes-active {
-    background: var(--jp-layout-color3);
-    font-weight: bold;
-}
-
+/* **** Various elements ******** */
 .scenes-SceneItemSpacer {
     flex-grow: 1;
     flex-shrink: 1;
-}
-
+}  
 .scenes-ItemText {
     padding-left: 6px;
 }
-
-/* just testing
-.scenes-IconButton .jp-icon3 {
-    fill:rgb(129, 68, 129) !important;
-}
-*/
-
