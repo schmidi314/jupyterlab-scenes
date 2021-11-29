@@ -1,5 +1,7 @@
 # jupyterlab_scenes
 
+[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/schmidi314/jupyterlab-scenes/master?urlpath=lab)
+
 Define subsets of code cells as scenes and execute them.
 
 ## Usage
