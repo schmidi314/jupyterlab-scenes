@@ -132,13 +132,24 @@ class Toolbar extends React.Component<IPropertiesToolbar, IState> {
         const onClickDown = () => { 
             this.props.commands.execute(ScenesSidebar.command_id_move_active_scene_down)
         }
+
+        const onClickNext = () => {
+            this.props.commands.execute(ScenesSidebar.command_id_to_next_scene_cell)
+        }
+       
+        const onClickPrev = () => {
+            this.props.commands.execute(ScenesSidebar.command_id_to_previous_scene_cell)
+        }
        
         return (
-            <div>
+            <div className="scenes-Toolbar">
                 <button className="scenes-IconButton" title="New Empty Scene" onClick={onClickNew}><addIcon.react tag="span" className="jp-ToolbarButtonComponent-icon f1vya9e0"/></button>
                 <button className="scenes-IconButton" title="Duplicate Active Scene" onClick={onClickDuplicate}><copyIcon.react tag="span" className="jp-ToolbarButtonComponent-icon f1vya9e0"/></button>
                 <button className="scenes-IconButton" title="Move Active Scene Up" onClick={onClickUp}><caretUpIcon.react tag="span" className="jp-ToolbarButtonComponent-icon f1vya9e0"/></button>
                 <button className="scenes-IconButton" title="Move Active Scene Down" onClick={onClickDown}><caretDownIcon.react tag="span" className="jp-ToolbarButtonComponent-icon f1vya9e0"/></button>
+                <div className="scenes-SceneItemSpacer"></div>
+                <button className="scenes-IconButton align-right" title="Jump to Next Scene Cell" onClick={onClickNext}><caretDownIcon.react tag="span" className="jp-ToolbarButtonComponent-icon f1vya9e0"/></button>
+                <button className="scenes-IconButton align-right" title="Move to Previous Scene Cell" onClick={onClickPrev}><caretUpIcon.react tag="span" className="jp-ToolbarButtonComponent-icon f1vya9e0"/></button>
             </div>
         );
     }

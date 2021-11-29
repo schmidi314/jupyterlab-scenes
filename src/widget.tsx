@@ -154,6 +154,16 @@ export class ScenesSidebar extends ReactWidget {
             label: 'Move Active Scene Down',
             execute: () => { this._notebookHandler.moveActiveSceneDown(); }
         });
+
+        this._app.commands.addCommand(ScenesSidebar.command_id_to_next_scene_cell, {
+            label: 'Jump to Next Scene Cell',
+            execute: () => { this._notebookHandler.jumpToNextSceneCell(); }
+        });
+
+        this._app.commands.addCommand(ScenesSidebar.command_id_to_previous_scene_cell, {
+            label: 'Jump to Previous Scene Cell',
+            execute: () => { this._notebookHandler.jumpToPreviousSceneCell(); }
+        });
     }
 
     private _setupKeyboardShortcuts() {
@@ -203,4 +213,6 @@ export class ScenesSidebar extends ReactWidget {
     static command_id_delete_scene =           'scenes:delete-scene';
     static command_id_move_active_scene_up =   'scenes:move-active-scene-up';
     static command_id_move_active_scene_down = 'scenes:move-active-scene-down';
+    static command_id_to_next_scene_cell =     'scenes:jump-to-next-scene-cell';
+    static command_id_to_previous_scene_cell = 'scenes:jump-to-previous-scene-cell';
 };

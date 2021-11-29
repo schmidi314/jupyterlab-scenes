@@ -1,4 +1,4 @@
-import { INotebookTracker, NotebookPanel, Notebook } from '@jupyterlab/notebook';
+import { INotebookTracker, NotebookPanel, Notebook, NotebookActions } from '@jupyterlab/notebook';
 import { Cell, CodeCell } from '@jupyterlab/cells';
 import { PartialJSONObject } from '@lumino/coreutils';
 import { PathExt } from '@jupyterlab/coreutils';
@@ -208,10 +208,51 @@ export class NotebookHandler {
             }
         });
     }
+    jumpToNextSceneCell() {
+        const presentCell = this._nbTracker.activeCell;
+        if(!presentCell) return;
+
+        const tag = this._getSceneTag(this.getActiveScene()!);
+        const cells = this._nbTracker.currentWidget!.content.widgets;
+        let cellIdx = cells.indexOf(presentCell) as number;
+        let numCells = cells.length as number;
+
+        for(let n=cellIdx+1; n<numCells; n++) {
+            let cell = cells[n];
+            if(cell.model.metadata.get(tag)) {
+                this._activateCellAndExpandParentHeadings(cell);
+                break;
+            }
+        }
+    }
+    jumpToPreviousSceneCell() {
+        const presentCell = this._nbTracker.activeCell;
+        if(!presentCell) return;
+
+        const tag = this._getSceneTag(this.getActiveScene()!);
+        const cells = this._nbTracker.currentWidget!.content.widgets;
+        let cellIdx = cells.indexOf(presentCell) as number;
+
+        for(let n=cellIdx-1; n>=0; n--) {
+            let cell = cells[n];
+            if(cell.model.metadata.get(tag)) {
+                this._activateCellAndExpandParentHeadings(cell);
+                break;
+            }
+        }
+    }
+
+   
+
     
     /* ****************************************************************************************************************************************
      * Various private helper methods
      * ****************************************************************************************************************************************/
+
+    private _activateCellAndExpandParentHeadings(cell: Cell) {
+        NotebookActions.expandParent(cell, this._nbTracker.currentWidget!.content);
+        cell.activate();
+    }
 
     private _moveScene(scene_name: string, direction: 'up'|'down') {
         const scenes_list = this.getScenesList();
