@@ -138,11 +138,10 @@ export class NotebookHandler {
         
         if(!cell.model.metadata.get(tag)) {
             cell.model.metadata.set(tag, true);
-            cell.addClass(SCENE_CELL_CLASS);
         } else {
             cell.model.metadata.delete(tag);
-            cell.removeClass(SCENE_CELL_CLASS);
         }
+        this._updateCellClassAndTags(cell, tag);
     }
 
     // **** scene management and running *****************************************
@@ -197,15 +196,11 @@ export class NotebookHandler {
     
     // **** various **************************************************************
 
-    updateCellClasses(notebook: Notebook, scene_name: string) {
+    updateCellClassesAndTags(notebook: Notebook, scene_name: string) {
         // console.log('updating', scene_name)
-        const tag = this._getSceneTag(scene_name);
+        const scene_tag = this._getSceneTag(scene_name);
         notebook.widgets.map((cell: Cell) => {
-            if(!!cell.model.metadata.get(tag)) {
-                cell.addClass(SCENE_CELL_CLASS);
-            } else {
-                cell.removeClass(SCENE_CELL_CLASS);
-            }
+            this._updateCellClassAndTags(cell, scene_tag)
         });
     }
     jumpToNextSceneCell() {
@@ -242,12 +237,31 @@ export class NotebookHandler {
         }
     }
 
-   
-
-    
     /* ****************************************************************************************************************************************
      * Various private helper methods
      * ****************************************************************************************************************************************/
+    
+    private _updateCellClassAndTags(cell: Cell, scene_tag: string) {
+        let cell_tags: string[] = [];
+        if(cell.model.metadata.has("tags")) {
+            cell_tags = cell.model.metadata.get('tags') as string[];
+        }
+
+        if(!!cell.model.metadata.get(scene_tag)) {
+            cell.addClass(SCENE_CELL_CLASS);
+            if(!cell_tags.includes('ActiveScene')) cell_tags.push('ActiveScene');
+        } else {
+            cell.removeClass(SCENE_CELL_CLASS);
+            if(cell_tags.includes('ActiveScene')) cell_tags.splice(cell_tags.indexOf('ActiveScene'), 1);
+        }
+
+        if(cell_tags.length > 0) {
+            cell.model.metadata.set("tags", cell_tags);
+        } else {
+            cell.model.metadata.delete("tags");
+        }
+
+    }
 
     private _activateCellAndExpandParentHeadings(cell: Cell) {
         NotebookActions.expandParent(cell, this._nbTracker.currentWidget!.content);
@@ -310,7 +324,7 @@ export class NotebookHandler {
         
         this._nbTracker.forEach((nbPanel) => {
             if(nbPanel.context === activeNotebookPanel.context) {
-                this.updateCellClasses(nbPanel.content, activeScene);
+                this.updateCellClassesAndTags(nbPanel.content, activeScene);
             }
         });
 

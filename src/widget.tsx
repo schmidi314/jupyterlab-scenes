@@ -34,7 +34,7 @@ export class ScenesSidebar extends ReactWidget {
             //console.log('widgetAdded', nbpanel.context.path)
             nbpanel.context.ready.then(() => {
                 //console.log('context ready', nbpanel.context.path);
-                this._notebookHandler.updateCellClasses(nbpanel.content, this._notebookHandler.getActiveScene(nbpanel.content)!);
+                this._notebookHandler.updateCellClassesAndTags(nbpanel.content, this._notebookHandler.getActiveScene(nbpanel.content)!);
                 this.update(); 
             })
         });
