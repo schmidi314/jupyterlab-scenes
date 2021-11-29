@@ -1,0 +1,128 @@
+
+.scenes-ScenesSidebar {
+  flex: 1 1 auto;
+  margin: 0;
+  padding: 0;
+  list-style-type: none;
+  background: var(--jp-layout-color1);
+  color: var(--jp-ui-font-color1);
+  font-size: var(--jp-ui-font-size1);
+  height: 100%;
+}
+
+.scenes-ScenesSidebar .scenes-Header {
+    padding: 10px;
+    text-transform: uppercase;
+}
+
+
+
+.scenes-ScenesSidebar .scenes-SceneItem:hover {
+    background: var(--jp-layout-color4);
+    cursor: pointer;
+}
+
+
+
+.scenes-ScenesSidebar .scenes-SceneItemActive:hover {
+    background: var(--jp-layout-color4);
+    font-weight: bold;
+    cursor: pointer;
+}
+
+
+.scene-cell .CodeMirror:after {
+    height: 10px;
+    width: 10px;
+    display: block;
+    content: '';
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    border-radius: 50%;
+    background-color: rgb(129, 68, 129);
+}
+
+.scenes-InitSceneButton {
+    border-radius: 8px;
+    color: var(--jp-ui-font-color3);
+    border-style: solid;
+    border-color: var(--jp-ui-font-color3);
+    float: right;
+    background-color: inherit;
+    border-width: 2px;
+
+}
+
+.scenes-InitSceneButton:hover {
+    color: var(--jp-ui-font-color2);
+    border-color: var(--jp-ui-font-color2);
+    border-width: 4px;
+}
+
+.scenes-InitSceneButtonActive {
+    border-radius: 8px;
+    color: rgb(129, 68, 129);
+    border-color: rgb(129, 68, 129);
+    float: right;
+    border-style: solid;
+    background-color: inherit;
+    border-width: 2px;
+}
+
+.scenes-InitSceneButtonActive:hover {
+    border-width: 4px;
+}
+
+/* Scene Item */
+
+.scenes-ScenesSidebar .scenes-SceneItem {
+    padding: 7px;
+    margin: 5px;
+    height: 28px;
+    background: var(--jp-layout-color2);
+
+    flex: 0 0 auto;
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+}
+.scenes-active {
+    background: var(--jp-layout-color3);
+    font-weight: bold;
+}
+
+.scenes-SceneItemSpacer {
+    flex-grow: 1;
+    flex-shrink: 1;
+}
+
+.scenes-ItemText {
+    padding-left: 6px;
+}
+
+.scenes-IconButton {
+    height: 16px;
+    width: 16px;
+    background-color: inherit;
+
+    display: inline-block;
+    align-items: center;
+    vertical-align: middle;
+    border: none;
+    margin: 0px;
+    outline: none;
+    padding: 2px;
+    
+    /*
+    display: flex;
+    border: none !important;
+    box-sizing: border-box !important;
+    outline: none !important;
+    margin: 0px !important;
+    align-items: center !important;
+    float: center;
+    background-size: 16px;
+    */
+    
+}
