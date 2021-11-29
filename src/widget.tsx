@@ -27,7 +27,23 @@ export class ScenesSidebar extends ReactWidget {
         this._setupKeyboardShortcuts();
         this._setupScenesMenu();
 
-        this._nbTracker.currentChanged.connect((sender, nbpanel) => { this.onNotebookChanged(); });
+        // this is needed to sync ScenesSidebar and code cells on load
+        this._nbTracker.widgetAdded.connect((_x, nbpanel) => {
+            //console.log('widgetAdded', nbpanel.context.path)
+            nbpanel.context.ready.then(() => {
+                //console.log('context ready', nbpanel.context.path);
+                this._notebookHandler.updateCellClasses(nbpanel.content, this._notebookHandler.getActiveScene(nbpanel.content)!);
+                this.update(); 
+            })
+        });
+
+        // this is needed syncing the ScenesSidebar to the current notebook panel
+        this._nbTracker.currentChanged.connect((sender, nbpanel) => {
+            //console.log('currentChanged', nbpanel!.context.path)
+            if(!nbpanel?.context.isReady) return;
+            this.update(); 
+        });
+        
         this._notebookHandler.scenesChanged.connect(() => { this.update(); });
     }
 

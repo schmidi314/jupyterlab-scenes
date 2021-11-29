@@ -1,4 +1,4 @@
-import { INotebookTracker, NotebookPanel } from '@jupyterlab/notebook';
+import { INotebookTracker, NotebookPanel, Notebook } from '@jupyterlab/notebook';
 import { Cell, CodeCell } from '@jupyterlab/cells';
 import { PartialJSONObject } from '@lumino/coreutils';
 import { PathExt } from '@jupyterlab/coreutils';
@@ -69,8 +69,8 @@ export class NotebookHandler {
     getScenesList() {
         return this._sceneDB.getScenesList();
     }
-    getActiveScene() {
-        return this._sceneDB.getActiveScene()
+    getActiveScene(notebook:(Notebook|null)=null) {
+        return this._sceneDB.getActiveScene(notebook)
     }
     getInitScene() {
         return this._sceneDB.getInitScene()
@@ -195,6 +195,19 @@ export class NotebookHandler {
         this._scenesChanged();
     }
     
+    // **** various **************************************************************
+    
+    updateCellClasses(notebook: Notebook, scene_name: string) {
+        console.log('updating', scene_name)
+        const tag = this._getSceneTag(scene_name);
+        notebook.widgets.map((cell: Cell) => {
+            if(!!cell.model.metadata.get(tag)) {
+                cell.addClass(SCENE_CELL_CLASS);
+            } else {
+                cell.removeClass(SCENE_CELL_CLASS);
+            }
+        });
+    }
     
     /* ****************************************************************************************************************************************
      * Various private helper methods
@@ -254,22 +267,10 @@ export class NotebookHandler {
         let nbPanel = this._nbTracker.currentWidget;
         let activeScene = this._sceneDB.getActiveScene();
         if(nbPanel && activeScene) {
-            this._updateCellClasses(nbPanel, activeScene);
+            this.updateCellClasses(nbPanel.content, activeScene);
         }
 
         this.scenesChanged.emit(void 0);
-    }
-
-    private _updateCellClasses(nbPanel: NotebookPanel, scene_name: string) {
-        const tag = this._getSceneTag(scene_name);
-        const notebook = nbPanel.content;
-        notebook.widgets.map((cell: Cell) => {
-            if(!!cell.model.metadata.get(tag)) {
-                cell.addClass(SCENE_CELL_CLASS);
-            } else {
-                cell.removeClass(SCENE_CELL_CLASS);
-            }
-        });
     }
 
     private _getSceneTag(scene_name: string) {
@@ -302,9 +303,9 @@ class NotebookSceneDatabase {
 
         return data['scenes']
     }
-    getActiveScene(): string | null {
+    getActiveScene(notebook:(Notebook|null)=null): string | null {
         
-        let data = this._getSceneDataAndMaybeSetupDefaultData();
+        let data = this._getSceneDataAndMaybeSetupDefaultData(notebook);
         if(!data) return null;
 
         return data['active_scene'];
@@ -344,13 +345,19 @@ class NotebookSceneDatabase {
      * Helpers
      * ****************************************************************************************************************************************/
 
-    private _getSceneDataAndMaybeSetupDefaultData() : {scenes: string[], active_scene: string, init_scene: string|null} | null {
-        let metadata = this._nbTracker.currentWidget?.content.model?.metadata;
+    private _getSceneDataAndMaybeSetupDefaultData(notebook:(Notebook|null)=null) : {scenes: string[], active_scene: string, init_scene: string|null} | null {
+        
+        if(!notebook) {
+            notebook = this._nbTracker.currentWidget!.content;
+        }
+        
+        let metadata = notebook.model?.metadata;
         if(!metadata) {
             return null;
         }
 
         if(!metadata.has(NB_METADATA_KEY)) {
+            console.log('setting default scene data!!!!!!!!!!!')
             metadata.set(NB_METADATA_KEY, {scenes: ['Default Scene'], active_scene: 'Default Scene', init_scene: ''})
         }
 
