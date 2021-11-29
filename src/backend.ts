@@ -161,7 +161,7 @@ export class NotebookHandler {
         notebookPanel.content.widgets.map((cell: Cell) => {
             if(!!cell.model.metadata.get(tag)) {
                 if(cell.model.type == 'code') {
-                    CodeCell.execute(cell as CodeCell, notebookPanel.sessionContext);
+                    CodeCell.execute(cell as CodeCell, notebookPanel.sessionContext, {recordTiming: notebookPanel.content.notebookConfig.recordTiming});
                 }
             }
         });
@@ -360,7 +360,7 @@ class NotebookSceneDatabase {
         }
 
         if(!metadata.has(NB_METADATA_KEY)) {
-            console.log('setting default scene data!!!!!!!!!!!')
+            //console.log('setting default scene data!!!!!!!!!!!')
             metadata.set(NB_METADATA_KEY, {scenes: ['Default Scene'], active_scene: 'Default Scene', init_scene: ''})
         }
 
