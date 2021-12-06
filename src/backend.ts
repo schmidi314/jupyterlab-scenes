@@ -129,19 +129,27 @@ export class NotebookHandler {
 
         this._scenesChanged();
     }
-    toggleSceneMembershipOfCurrentCell() {
-        const cell = this._nbTracker.activeCell;
-        if(!cell) return;
+    toggleSceneMembershipOfSelectedCells() {
+        if(!this._nbTracker.currentWidget) return;
+        if(!this._nbTracker.activeCell) return;
 
         const current_scene = this._sceneDB.getActiveScene();
         const tag = 'scene__' + current_scene;
-        
-        if(!cell.model.metadata.get(tag)) {
-            cell.model.metadata.set(tag, true);
-        } else {
-            cell.model.metadata.delete(tag);
-        }
-        this._updateCellClassAndTags(cell, tag);
+        const notebook = this._nbTracker.currentWidget.content;
+
+        const set_membership = !this._nbTracker.activeCell.model.metadata.get(tag);
+
+        notebook.widgets.forEach((cell: Cell) => {
+            if(!notebook.isSelectedOrActive(cell)) return;
+            if(cell.model.type != 'code') return;
+
+            if(set_membership) {
+                cell.model.metadata.set(tag, true);
+            } else {
+                cell.model.metadata.delete(tag);
+            }
+            this._updateCellClassAndTags(cell, tag);
+        });
     }
 
     // **** scene management and running *****************************************

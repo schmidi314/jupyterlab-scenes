@@ -86,7 +86,7 @@ export class ScenesSidebar extends ReactWidget {
 
         this._app.commands.addCommand(ScenesSidebar.command_id_toggle_scene_cell, {
             label: 'Toggle Scene Cell',
-            execute: () => { this._notebookHandler.toggleSceneMembershipOfCurrentCell(); }
+            execute: () => { this._notebookHandler.toggleSceneMembershipOfSelectedCells(); }
         });
 
         this._app.commands.addCommand(ScenesSidebar.command_id_run_scene, {
