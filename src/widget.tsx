@@ -1,5 +1,6 @@
 import { JupyterFrontEnd } from '@jupyterlab/application';
-import { INotebookTracker } from '@jupyterlab/notebook';
+import { INotebookTracker, Notebook} from '@jupyterlab/notebook';
+import { Cell } from '@jupyterlab/cells';
 import { IMainMenu } from '@jupyterlab/mainmenu';
 import { Menu } from '@lumino/widgets';
 import { ReactWidget, InputDialog, Dialog, showErrorMessage } from '@jupyterlab/apputils';
@@ -37,7 +38,11 @@ export class ScenesSidebar extends ReactWidget {
                 this._notebookHandler.updateCellClassesAndTags(nbpanel.content, this._notebookHandler.getActiveScene(nbpanel.content)!);
                 this._notebookHandler.importLegacyInitializationCells(nbpanel.content);
                 this.update(); 
-            })
+            });
+            // this is needed for handling copy/paste
+            nbpanel.content.activeCellChanged.connect((notebook: Notebook, cell: Cell) => {
+                this._notebookHandler.updateCellClassesAndTags(notebook, this._notebookHandler.getActiveScene()!, cell);
+            });
         });
 
         // this is needed syncing the ScenesSidebar to the current notebook panel

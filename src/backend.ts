@@ -211,12 +211,20 @@ export class NotebookHandler {
     
     // **** various **************************************************************
 
-    updateCellClassesAndTags(notebook: Notebook, scene_name: string) {
+    updateCellClassesAndTags(notebook: Notebook, scene_name:(string|null)=null, cell:(Cell|null)=null) {
         // console.log('updating', scene_name)
+
+        if(scene_name == null) scene_name = this.getActiveScene()!;
         const scene_tag = this._getSceneTag(scene_name);
-        notebook.widgets.map((cell: Cell) => {
-            this._updateCellClassAndTags(cell, scene_tag)
-        });
+
+        if(cell == null) {
+            notebook.widgets.map((cell: Cell) => {
+                this._updateCellClassAndTags(cell, scene_tag);
+            });
+        } else {
+            this._updateCellClassAndTags(cell, scene_tag);
+        }
+
     }
     jumpToNextSceneCell() {
         const presentCell = this._nbTracker.activeCell;
@@ -290,23 +298,10 @@ export class NotebookHandler {
         }
     }
 
+
     /* ****************************************************************************************************************************************
      * Various private helper methods
      * ****************************************************************************************************************************************/
-
-    private _writeCellMetadataForLegacyInitializationCellsPlugin(notebook: Notebook) {
-
-        let init_scene = this.getInitScene();
-        let init_scene_tag = (init_scene != null) ? this._getSceneTag(init_scene) : null;
-
-        notebook.widgets.map((cell: Cell) => {
-            if(init_scene_tag != null && !!cell.model.metadata.get(init_scene_tag)) {
-                cell.model.metadata.set('init_cell', true);
-            } else {
-                cell.model.metadata.delete('init_cell');
-            }
-        });
-    }
 
     private _updateCellClassAndTags(cell: Cell, scene_tag: string) {
         let cell_tags: string[] = [];
@@ -330,6 +325,21 @@ export class NotebookHandler {
 
     }
 
+    private _writeCellMetadataForLegacyInitializationCellsPlugin(notebook: Notebook) {
+
+        let init_scene = this.getInitScene();
+        let init_scene_tag = (init_scene != null) ? this._getSceneTag(init_scene) : null;
+
+        notebook.widgets.map((cell: Cell) => {
+            if(init_scene_tag != null && !!cell.model.metadata.get(init_scene_tag)) {
+                cell.model.metadata.set('init_cell', true);
+            } else {
+                cell.model.metadata.delete('init_cell');
+            }
+        });
+    }
+
+    
     private _activateCellAndExpandParentHeadings(cell: Cell) {
         NotebookActions.expandParent(cell, this._nbTracker.currentWidget!.content);
         cell.activate();
