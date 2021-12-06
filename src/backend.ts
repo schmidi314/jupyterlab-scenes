@@ -134,6 +134,7 @@ export class NotebookHandler {
         if(!this._nbTracker.activeCell) return;
 
         const current_scene = this._sceneDB.getActiveScene();
+        const is_init_scene = current_scene == this.getInitScene();
         const tag = 'scene__' + current_scene;
         const notebook = this._nbTracker.currentWidget.content;
 
@@ -145,8 +146,14 @@ export class NotebookHandler {
 
             if(set_membership) {
                 cell.model.metadata.set(tag, true);
+                if(is_init_scene) {
+                    cell.model.metadata.set('init_cell', true);
+                }
             } else {
                 cell.model.metadata.delete(tag);
+                if(is_init_scene) {
+                    cell.model.metadata.delete('init_cell');
+                }
             }
             this._updateCellClassAndTags(cell, tag);
         });
@@ -244,11 +251,63 @@ export class NotebookHandler {
             }
         }
     }
+    importLegacyInitializationCells(notebook: Notebook) {
+
+        let init_scenes_consistent = true;
+        let legacy_init_cells_exist = false;
+        let init_scene = this.getInitScene();
+        let init_scene_tag = (init_scene != null) ? this._getSceneTag(init_scene) : null;
+
+        // find out if there are legacy init cells and, if so, whether they are consistent with the scenes init cell
+        notebook.widgets.map((cell: Cell) => {
+            let is_legacy_init_cell = !!cell.model.metadata.get('init_cell');
+            let is_scenes_init_cell = init_scene_tag != null && !!cell.model.metadata.get(init_scene_tag);
+            if(is_legacy_init_cell) {
+                legacy_init_cells_exist = true;
+            }
+            if(is_legacy_init_cell != is_scenes_init_cell) {
+                init_scenes_consistent = false;
+            }
+        }); 
+        
+        if(!init_scenes_consistent && legacy_init_cells_exist) {
+            const scene_name = 'Legacy Init';
+            
+            notebook.widgets.map((cell: Cell) => {
+                let is_legacy_init_cell = !!cell.model.metadata.get('init_cell');
+                if(is_legacy_init_cell) {
+                    cell.model.metadata.set(this._getSceneTag(scene_name), true);
+                }
+            });
+
+            const scene_list = this.getScenesList();
+            if(!scene_list.includes(scene_name)) {
+                scene_list.push(scene_name)
+                this._sceneDB.setScenesList(scene_list);
+            }
+            this.toggleInitScene(scene_name);
+            this.setActiveScene(scene_name);
+        }
+    }
 
     /* ****************************************************************************************************************************************
      * Various private helper methods
      * ****************************************************************************************************************************************/
-    
+
+    private _writeCellMetadataForLegacyInitializationCellsPlugin(notebook: Notebook) {
+
+        let init_scene = this.getInitScene();
+        let init_scene_tag = (init_scene != null) ? this._getSceneTag(init_scene) : null;
+
+        notebook.widgets.map((cell: Cell) => {
+            if(init_scene_tag != null && !!cell.model.metadata.get(init_scene_tag)) {
+                cell.model.metadata.set('init_cell', true);
+            } else {
+                cell.model.metadata.delete('init_cell');
+            }
+        });
+    }
+
     private _updateCellClassAndTags(cell: Cell, scene_tag: string) {
         let cell_tags: string[] = [];
         if(cell.model.metadata.has("tags")) {
@@ -335,6 +394,8 @@ export class NotebookHandler {
                 this.updateCellClassesAndTags(nbPanel.content, activeScene);
             }
         });
+
+        this._writeCellMetadataForLegacyInitializationCellsPlugin(activeNotebookPanel.content);
 
         this.scenesChanged.emit(void 0);
     }

@@ -35,6 +35,7 @@ export class ScenesSidebar extends ReactWidget {
             nbpanel.context.ready.then(() => {
                 //console.log('context ready', nbpanel.context.path);
                 this._notebookHandler.updateCellClassesAndTags(nbpanel.content, this._notebookHandler.getActiveScene(nbpanel.content)!);
+                this._notebookHandler.importLegacyInitializationCells(nbpanel.content);
                 this.update(); 
             })
         });
@@ -79,7 +80,6 @@ export class ScenesSidebar extends ReactWidget {
         this.id = 'scenes';
         this.title.caption = 'Scenes';
         this.title.icon = scenesIcon;
-        // this.title.label = 'Scenes';
     }
 
     private _setupGlobalCommands() {
